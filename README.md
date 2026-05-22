@@ -1,5 +1,9 @@
 # claude-plugins
 
+[![npm version](https://img.shields.io/npm/v/claude-plugins.svg)](https://www.npmjs.com/package/claude-plugins)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Node.js](https://img.shields.io/badge/node-%3E%3D18-brightgreen.svg)](https://nodejs.org)
+
 > The safety layer Claude Code doesn't ship with.
 
 ```bash
@@ -338,9 +342,28 @@ All hooks are open source and reviewed before registry inclusion. Read the hook 
 
 ---
 
+## Docs
+
+| Topic | Link |
+|-------|------|
+| Installation and setup | [docs/getting-started.md](docs/getting-started.md) |
+| Writing your own plugin | [docs/writing-plugins.md](docs/writing-plugins.md) |
+| plugin.json field reference | [docs/plugin-manifest.md](docs/plugin-manifest.md) |
+| Hook API (stdin, exit codes, matchers) | [docs/hook-api.md](docs/hook-api.md) |
+| Security model | [SECURITY.md](SECURITY.md) |
+| Changelog | [CHANGELOG.md](CHANGELOG.md) |
+
+---
+
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md).
+1. Fork the repo
+2. Add your plugin under `plugins/your-plugin-name/`
+3. Add an entry to `registry.json`
+4. Add tests in `tests/hooks/your-plugin-name.test.js`
+5. Open a PR — use the plugin submission issue template if you want feedback first
+
+Hooks are reviewed for network requests, file access, and shell injection before any merge.
 
 ---
 

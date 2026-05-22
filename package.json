@@ -1,24 +1,27 @@
 {
   "name": "claude-plugins",
   "version": "0.1.0",
-  "description": "Community plugin manager for Claude Code CLI",
+  "description": "The safety layer Claude Code doesn't ship with — hooks that enforce, not suggest",
+  "type": "module",
   "main": "cli/index.js",
   "bin": {
     "claude-plugins": "cli/index.js"
   },
   "scripts": {
-    "test": "node cli/index.js list"
+    "test": "node --test tests/hooks/*.test.js tests/cli/*.test.js",
+    "test:hooks": "node --test tests/hooks/*.test.js",
+    "test:watch": "node --test --watch tests/hooks/*.test.js"
   },
   "keywords": [
     "claude",
     "claude-code",
     "anthropic",
-    "ai",
     "plugins",
-    "extensions",
-    "cli"
+    "hooks",
+    "safety",
+    "developer-tools"
   ],
-  "author": "",
+  "author": "Shaswata Tripathy",
   "license": "MIT",
   "dependencies": {
     "commander": "^12.0.0",
