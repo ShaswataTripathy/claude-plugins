@@ -1,0 +1,22 @@
+{
+  "name": "git-workflow",
+  "version": "1.0.0",
+  "description": "Smart git commands: commit with AI messages, branch from issue, clean PRs",
+  "author": "community",
+  "components": ["skill", "hook"],
+  "skills": ["commit.md", "branch.md", "cleanup.md"],
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node -e \"const i=JSON.parse(require('fs').readFileSync('/dev/stdin','utf8')); if(i.tool_input?.command?.includes('git push --force') && !i.tool_input?.command?.includes('--force-with-lease')) { process.stderr.write('git-workflow plugin: Use --force-with-lease instead of --force\\n'); process.exit(2); }\""
+          }
+        ]
+      }
+    ]
+  },
+  "postInstall": "Slash commands added: /commit, /branch, /cleanup. Try /commit in your next session!"
+}

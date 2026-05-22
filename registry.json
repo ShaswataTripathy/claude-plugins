@@ -1,0 +1,42 @@
+{
+  "version": "1",
+  "updatedAt": "2026-05-22",
+  "plugins": [
+    {
+      "name": "git-workflow",
+      "version": "1.0.0",
+      "description": "Smart git commands: commit with AI messages, branch from issue, clean PRs",
+      "author": "community",
+      "components": ["skill", "hook"],
+      "tags": ["git", "productivity", "workflow"],
+      "stars": 0
+    },
+    {
+      "name": "code-review",
+      "version": "1.0.0",
+      "description": "Deep code review with security, perf, and style analysis on any diff",
+      "author": "community",
+      "components": ["skill"],
+      "tags": ["review", "quality", "security"],
+      "stars": 0
+    },
+    {
+      "name": "docker-debug",
+      "version": "1.0.0",
+      "description": "Diagnose failing containers, inspect logs, and suggest fixes instantly",
+      "author": "community",
+      "components": ["skill"],
+      "tags": ["docker", "debugging", "devops"],
+      "stars": 0
+    },
+    {
+      "name": "pr-description",
+      "version": "1.0.0",
+      "description": "Generate structured PR descriptions from your git diff automatically",
+      "author": "community",
+      "components": ["skill"],
+      "tags": ["git", "github", "productivity"],
+      "stars": 0
+    }
+  ]
+}

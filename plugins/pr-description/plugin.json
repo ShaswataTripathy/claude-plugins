@@ -1,0 +1,8 @@
+{
+  "name": "pr-description",
+  "version": "1.0.0",
+  "description": "Generate structured PR descriptions from your git diff automatically",
+  "author": "community",
+  "components": ["skill"],
+  "skills": ["pr.md"]
+}
