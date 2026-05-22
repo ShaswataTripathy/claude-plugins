@@ -1,0 +1,34 @@
+{
+  "name": "token-guard",
+  "version": "1.0.0",
+  "description": "Proactive token burn prevention — monitors context fill and intercepts expensive operations before your session limit runs out",
+  "author": "community",
+  "components": ["skill", "hook"],
+  "skills": ["status.md", "estimate.md", "report.md"],
+  "hookFiles": ["context-monitor.js", "expensive-pattern.js"],
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"{plugin_dir}/hooks/context-monitor.js\""
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"{plugin_dir}/hooks/expensive-pattern.js\""
+          }
+        ]
+      }
+    ]
+  },
+  "postInstall": "token-guard is watching. You'll get warnings before your context fills up."
+}

@@ -1,0 +1,23 @@
+{
+  "name": "db-guard",
+  "version": "1.0.0",
+  "description": "Intercepts destructive database and infrastructure commands before they execute — drizzle, prisma, terraform, raw SQL",
+  "author": "community",
+  "components": ["skill", "hook"],
+  "skills": ["status.md", "audit.md"],
+  "hookFiles": ["intercept.js"],
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"{plugin_dir}/hooks/intercept.js\""
+          }
+        ]
+      }
+    ]
+  },
+  "postInstall": "db-guard is active. Destructive DB and infra commands will be intercepted before execution."
+}

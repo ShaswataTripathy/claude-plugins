@@ -1,11 +1,65 @@
 {
-  "version": "1",
+  "version": "2",
   "updatedAt": "2026-05-22",
   "plugins": [
     {
+      "name": "db-guard",
+      "version": "1.0.0",
+      "description": "Intercepts destructive database and infrastructure commands — drizzle, prisma, terraform, raw SQL. Blocks before execution.",
+      "author": "community",
+      "components": ["skill", "hook"],
+      "tags": ["database", "safety", "terraform", "prisma", "drizzle"],
+      "stars": 0
+    },
+    {
+      "name": "token-guard",
+      "version": "1.0.0",
+      "description": "Proactive token burn prevention. Monitors context fill and intercepts expensive operations before your session limit runs out.",
+      "author": "community",
+      "components": ["skill", "hook"],
+      "tags": ["tokens", "context", "cost", "limits", "productivity"],
+      "stars": 0
+    },
+    {
+      "name": "monorepo-setup",
+      "version": "1.0.0",
+      "description": "Scans nx/turbo/pnpm workspace config and auto-generates nested CLAUDE.md files for every package.",
+      "author": "community",
+      "components": ["skill"],
+      "tags": ["monorepo", "nx", "turborepo", "setup", "context"],
+      "stars": 0
+    },
+    {
+      "name": "context-doctor",
+      "version": "1.0.0",
+      "description": "Diagnoses and fixes bloated CLAUDE.md and skill files. Stops context rot from burning tokens on every single message.",
+      "author": "community",
+      "components": ["skill", "hook"],
+      "tags": ["context", "claude-md", "optimization", "tokens"],
+      "stars": 0
+    },
+    {
+      "name": "scope-guard",
+      "version": "1.0.0",
+      "description": "Hook-enforced task scope boundaries. Blocks writes outside the defined task perimeter — enforcement, not suggestions.",
+      "author": "community",
+      "components": ["skill", "hook"],
+      "tags": ["scope", "safety", "enforcement", "productivity"],
+      "stars": 0
+    },
+    {
+      "name": "api-guard",
+      "version": "1.0.0",
+      "description": "Catches broken API contracts the moment a signature changes. Finds all callers before the file is even saved.",
+      "author": "community",
+      "components": ["skill", "hook"],
+      "tags": ["api", "refactoring", "contracts", "typescript", "safety"],
+      "stars": 0
+    },
+    {
       "name": "git-workflow",
       "version": "2.0.0",
-      "description": "Complete git workflow — smart commits, branching, sync, undo, stash, history cleanup, and safety hooks",
+      "description": "Complete git workflow — smart commits, branching, sync, undo, stash, history cleanup, and safety hooks.",
       "author": "community",
       "components": ["skill", "hook"],
       "tags": ["git", "productivity", "workflow", "commits", "branching"],
@@ -14,7 +68,7 @@
     {
       "name": "code-review",
       "version": "1.0.0",
-      "description": "Deep code review with security, perf, and style analysis on any diff",
+      "description": "Deep code review with security, performance, and correctness analysis across any diff.",
       "author": "community",
       "components": ["skill"],
       "tags": ["review", "quality", "security"],
@@ -23,7 +77,7 @@
     {
       "name": "docker-debug",
       "version": "1.0.0",
-      "description": "Diagnose failing containers, inspect logs, and suggest fixes instantly",
+      "description": "Diagnose failing containers, inspect logs, and fix docker-compose issues.",
       "author": "community",
       "components": ["skill"],
       "tags": ["docker", "debugging", "devops"],
@@ -32,7 +86,7 @@
     {
       "name": "pr-description",
       "version": "1.0.0",
-      "description": "Generate structured PR descriptions from your git diff automatically",
+      "description": "Generate structured PR descriptions from your git diff automatically.",
       "author": "community",
       "components": ["skill"],
       "tags": ["git", "github", "productivity"],

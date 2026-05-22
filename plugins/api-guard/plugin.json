@@ -1,0 +1,23 @@
+{
+  "name": "api-guard",
+  "version": "1.0.0",
+  "description": "Catches broken API contracts the moment a signature changes — finds all callers before the file is even saved",
+  "author": "community",
+  "components": ["skill", "hook"],
+  "skills": ["check.md", "diff.md"],
+  "hookFiles": ["contract-check.js"],
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"{plugin_dir}/hooks/contract-check.js\""
+          }
+        ]
+      }
+    ]
+  },
+  "postInstall": "api-guard is active. Exported symbol changes will be checked for callers before writes complete."
+}

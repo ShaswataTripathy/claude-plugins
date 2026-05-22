@@ -1,0 +1,23 @@
+{
+  "name": "scope-guard",
+  "version": "1.0.0",
+  "description": "Hook-enforced task scope boundaries — blocks Claude from touching files outside the defined task perimeter",
+  "author": "community",
+  "components": ["skill", "hook"],
+  "skills": ["set.md", "status.md", "allow.md"],
+  "hookFiles": ["enforce.js"],
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"{plugin_dir}/hooks/enforce.js\""
+          }
+        ]
+      }
+    ]
+  },
+  "postInstall": "scope-guard installed. Use /scope-set to define task boundaries. Hook enforcement activates automatically."
+}

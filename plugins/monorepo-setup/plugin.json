@@ -1,0 +1,9 @@
+{
+  "name": "monorepo-setup",
+  "version": "1.0.0",
+  "description": "Scans your monorepo config and auto-generates nested CLAUDE.md files for every package — stops Claude from editing the wrong workspace",
+  "author": "community",
+  "components": ["skill"],
+  "skills": ["init.md", "add.md", "audit.md"],
+  "postInstall": "Commands ready: /monorepo-init, /monorepo-add, /monorepo-audit"
+}

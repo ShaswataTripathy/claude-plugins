@@ -1,0 +1,23 @@
+{
+  "name": "context-doctor",
+  "version": "1.0.0",
+  "description": "Diagnoses and fixes bloated CLAUDE.md and skill files — stops context rot from burning tokens on every single message",
+  "author": "community",
+  "components": ["skill", "hook"],
+  "skills": ["doctor.md", "fix.md"],
+  "hookFiles": ["size-monitor.js"],
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"{plugin_dir}/hooks/size-monitor.js\""
+          }
+        ]
+      }
+    ]
+  },
+  "postInstall": "context-doctor installed. CLAUDE.md changes are now monitored for size. Run /context-doctor for a full audit."
+}
