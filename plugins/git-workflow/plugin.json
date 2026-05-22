@@ -1,10 +1,19 @@
 {
   "name": "git-workflow",
-  "version": "1.0.0",
-  "description": "Smart git commands: commit with AI messages, branch from issue, clean PRs",
+  "version": "2.0.0",
+  "description": "Complete git workflow for Claude Code — smart commits, branching, history cleanup, stash, sync, and undo",
   "author": "community",
   "components": ["skill", "hook"],
-  "skills": ["commit.md", "branch.md", "cleanup.md"],
+  "skills": [
+    "commit.md",
+    "branch.md",
+    "cleanup.md",
+    "sync.md",
+    "undo.md",
+    "stash.md",
+    "log.md",
+    "fixup.md"
+  ],
   "hooks": {
     "PreToolUse": [
       {
@@ -12,11 +21,11 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node -e \"const i=JSON.parse(require('fs').readFileSync('/dev/stdin','utf8')); if(i.tool_input?.command?.includes('git push --force') && !i.tool_input?.command?.includes('--force-with-lease')) { process.stderr.write('git-workflow plugin: Use --force-with-lease instead of --force\\n'); process.exit(2); }\""
+            "command": "node --input-type=module <<'EOF'\nimport { readFileSync } from 'fs';\nconst input = JSON.parse(readFileSync('/dev/stdin', 'utf8'));\nconst cmd = input?.tool_input?.command || '';\n\n// Block git push --force (require --force-with-lease)\nif (/git push.*--force(?!-with-lease)/.test(cmd)) {\n  process.stderr.write('[git-workflow] Use --force-with-lease instead of --force to avoid overwriting remote commits.\\n');\n  process.exit(2);\n}\n\n// Block direct commits to main/master/develop\nif (/git commit/.test(cmd)) {\n  const { execSync } = await import('child_process');\n  try {\n    const branch = execSync('git branch --show-current', { encoding: 'utf8' }).trim();\n    if (/^(main|master|develop|staging|production)$/.test(branch)) {\n      process.stderr.write(`[git-workflow] You are about to commit directly to '${branch}'. Use a feature branch instead.\\nIf this is intentional, run the git command directly in your terminal.\\n`);\n      process.exit(2);\n    }\n  } catch { /* not in a git repo, allow */ }\n}\nEOF"
           }
         ]
       }
     ]
   },
-  "postInstall": "Slash commands added: /commit, /branch, /cleanup. Try /commit in your next session!"
+  "postInstall": "git-workflow v2 installed! Commands: /commit /branch /cleanup /sync /undo /stash /log /fixup"
 }

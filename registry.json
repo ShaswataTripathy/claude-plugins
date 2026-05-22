@@ -4,11 +4,11 @@
   "plugins": [
     {
       "name": "git-workflow",
-      "version": "1.0.0",
-      "description": "Smart git commands: commit with AI messages, branch from issue, clean PRs",
+      "version": "2.0.0",
+      "description": "Complete git workflow — smart commits, branching, sync, undo, stash, history cleanup, and safety hooks",
       "author": "community",
       "components": ["skill", "hook"],
-      "tags": ["git", "productivity", "workflow"],
+      "tags": ["git", "productivity", "workflow", "commits", "branching"],
       "stars": 0
     },
     {
