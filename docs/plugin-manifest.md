@@ -21,15 +21,16 @@ A plugin with no skills or hooks is valid — it just does nothing useful.
   "name": "db-guard",
   "version": "1.0.0",
   "description": "Blocks destructive database and infrastructure commands.",
-  "skills": ["status"],
+  "skills": ["status.md", "audit.md"],
   "hookFiles": ["intercept.js"],
-  "hooks": [
-    {
-      "event": "PreToolUse",
-      "matcher": "Bash",
-      "command": "node \"{plugin_dir}/intercept.js\""
-    }
-  ]
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [{ "type": "command", "command": "node \"{plugin_dir}/hooks/intercept.js\"" }]
+      }
+    ]
+  }
 }
 ```
 
@@ -62,10 +63,10 @@ One sentence. Shown in `npx claude-plugins search` output and `npx claude-plugin
 ### `skills`
 
 ```json
-"skills": ["status", "audit"]
+"skills": ["status.md", "audit.md"]
 ```
 
-Array of skill filenames without the `.md` extension. Each listed skill must have a corresponding file in `skills/`. The installer copies them to `~/.claude/commands/<name>/`.
+Array of skill filenames including the `.md` extension. Each listed skill must have a corresponding file in `skills/`. The installer copies them to `~/.claude/commands/<name>/`.
 
 Omit or leave empty if the plugin has no skills.
 
@@ -77,35 +78,40 @@ Omit or leave empty if the plugin has no skills.
 
 Array of hook script filenames. Each must exist in `hooks/`. The installer copies them to `~/.claude/plugins/<name>/hooks/`.
 
-The installer does **not** register these in `settings.json` automatically — they are just files on disk. You register them by adding entries to the `hooks` array below, referencing them via `{plugin_dir}`.
+The installer does **not** register these in `settings.json` automatically — they are just files on disk. You register them by adding entries to the `hooks` object below, referencing them via `{plugin_dir}`.
 
 Omit or leave empty if the plugin has no hooks.
 
 ### `hooks`
 
 ```json
-"hooks": [
-  {
-    "event": "PreToolUse",
-    "matcher": "Bash",
-    "command": "node \"{plugin_dir}/intercept.js\""
-  }
-]
+"hooks": {
+  "PreToolUse": [
+    {
+      "matcher": "Bash",
+      "hooks": [{ "type": "command", "command": "node \"{plugin_dir}/hooks/intercept.js\"" }]
+    }
+  ],
+  "PostToolUse": [
+    {
+      "matcher": ".*",
+      "hooks": [{ "type": "command", "command": "node \"{plugin_dir}/hooks/monitor.js\"" }]
+    }
+  ]
+}
 ```
 
-Array of hook registrations. Each entry is patched into `~/.claude/settings.json` (or `.claude/settings.json` for project-scoped installs).
+Object keyed by lifecycle event. Each key maps to an array of matcher entries. Each entry is patched into `~/.claude/settings.json` (or `.claude/settings.json` for project-scoped installs).
 
-#### `hooks[].event`
+#### Event names
 
-One of:
-
-| Value | When it fires |
-|-------|--------------|
+| Key | When it fires |
+|-----|--------------|
 | `PreToolUse` | Before the tool executes |
 | `PostToolUse` | After the tool completes |
 | `SessionStart` | When a Claude Code session begins |
 
-#### `hooks[].matcher`
+#### `hooks.<event>[].matcher`
 
 Regex matched against the tool name. Examples:
 
@@ -117,12 +123,12 @@ Regex matched against the tool name. Examples:
 
 Match as narrowly as your hook's logic requires.
 
-#### `hooks[].command`
+#### `hooks.<event>[].hooks[].command`
 
-Shell command the installer writes into `settings.json`. Use `{plugin_dir}` to reference the installed hooks directory:
+Shell command the installer writes into `settings.json`. Use `{plugin_dir}` to reference the plugin's installed directory (the parent of `hooks/`):
 
 ```json
-"command": "node \"{plugin_dir}/intercept.js\""
+"command": "node \"{plugin_dir}/hooks/intercept.js\""
 ```
 
 The installer replaces `{plugin_dir}` with the absolute path, e.g.:

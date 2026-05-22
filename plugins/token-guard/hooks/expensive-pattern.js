@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { readFileSync, statSync, existsSync } from 'fs';
+import { readFileSync } from 'fs';
 
 const input = JSON.parse(readFileSync(0, 'utf8'));
 const cmd = input?.tool_input?.command ?? '';

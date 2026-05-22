@@ -4,10 +4,10 @@ import { resolve, relative, extname } from 'path';
 import { execSync } from 'child_process';
 
 const input = JSON.parse(readFileSync(0, 'utf8'));
+const toolName = input?.tool_name ?? '';
 const filePath = input?.tool_input?.file_path ?? '';
-const newContent = input?.tool_input?.content ?? '';
 
-if (!filePath || !newContent) process.exit(0);
+if (!filePath) process.exit(0);
 
 const CHECKABLE_EXTENSIONS = new Set(['.ts', '.tsx', '.js', '.jsx', '.py', '.go', '.rs']);
 if (!CHECKABLE_EXTENSIONS.has(extname(filePath))) process.exit(0);
@@ -16,6 +16,21 @@ const abs = resolve(filePath);
 if (!existsSync(abs)) process.exit(0);
 
 const oldContent = readFileSync(abs, 'utf8');
+
+// Write gives us the full new content directly.
+// Edit gives us old_string/new_string — reconstruct the resulting file.
+let newContent;
+if (toolName === 'Write') {
+  newContent = input?.tool_input?.content ?? '';
+} else if (toolName === 'Edit') {
+  const oldStr = input?.tool_input?.old_string ?? '';
+  const newStr = input?.tool_input?.new_string ?? '';
+  newContent = oldContent.replace(oldStr, newStr);
+} else {
+  process.exit(0);
+}
+
+if (!newContent) process.exit(0);
 
 // Pull exported symbol names out of a file. Catches the most common patterns
 // across TS/JS/Python/Go without a full AST parse.

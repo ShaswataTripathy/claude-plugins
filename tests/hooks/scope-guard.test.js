@@ -1,7 +1,7 @@
 import { test, describe, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
 import { resolve, join } from 'path';
-import { writeFileSync, rmSync, existsSync, mkdirSync } from 'fs';
+import { readFileSync, writeFileSync, rmSync, existsSync, mkdirSync } from 'fs';
 import { homedir } from 'os';
 import { hook, tempDir, write } from './helpers.js';
 
@@ -125,4 +125,3 @@ describe('scope-guard — edge cases', () => {
   });
 });
 
-import { readFileSync } from 'fs';

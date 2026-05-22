@@ -180,19 +180,23 @@ export function uninstallPlugin(name) {
   }
 
   const settings = readSettings(record.scope || 'global');
+  let settingsDirty = false;
+
   if (settings.hooks) {
     for (const event of Object.keys(settings.hooks)) {
       settings.hooks[event] = settings.hooks[event].filter((h) => h._plugin !== name);
     }
-    writeSettings(settings, record.scope || 'global');
+    settingsDirty = true;
   }
 
   if (settings.mcpServers) {
     for (const key of Object.keys(settings.mcpServers)) {
       if (settings.mcpServers[key]?._plugin === name) delete settings.mcpServers[key];
     }
-    writeSettings(settings, record.scope || 'global');
+    settingsDirty = true;
   }
+
+  if (settingsDirty) writeSettings(settings, record.scope || 'global');
 
   delete state[name];
   writePluginState(state);

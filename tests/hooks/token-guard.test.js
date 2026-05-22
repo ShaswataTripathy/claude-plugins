@@ -1,7 +1,7 @@
 import { test, describe, beforeEach, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
 import { resolve, join } from 'path';
-import { writeFileSync, rmSync, existsSync, mkdirSync } from 'fs';
+import { readFileSync, writeFileSync, rmSync, existsSync, mkdirSync } from 'fs';
 import { homedir } from 'os';
 import { hook, bash } from './helpers.js';
 
@@ -32,8 +32,6 @@ afterEach(() => {
     rmSync(counterFile);
   }
 });
-
-import { readFileSync } from 'fs';
 
 describe('context-monitor — thresholds', () => {
   test('no output below 30 calls', async () => {

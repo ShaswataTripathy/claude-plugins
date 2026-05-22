@@ -103,6 +103,52 @@ const MAX_RETRIES = 3;
   });
 });
 
+describe('api-guard — Edit tool events', () => {
+  test('warns when Edit renames an exported function that has callers', async () => {
+    const td = tempDir({
+      'src/db/users.ts': TS_WITH_EXPORTS,
+      'src/routes/profile.ts': TS_CALLER,
+    });
+
+    try {
+      const editInput = {
+        tool_name: 'Edit',
+        tool_input: {
+          file_path: join(td.path, 'src/db/users.ts'),
+          old_string: 'async function getUserById',
+          new_string: 'async function findUserById',
+        },
+      };
+      const { code, stderr } = await hook(HOOK, editInput, { cwd: td.path });
+      assert.equal(code, 0);
+      assert.match(stderr, /api-guard/);
+    } finally {
+      td.cleanup();
+    }
+  });
+
+  test('exits clean for Edit on file with no callers', async () => {
+    const td = tempDir({
+      'src/db/users.ts': TS_WITH_EXPORTS,
+    });
+
+    try {
+      const editInput = {
+        tool_name: 'Edit',
+        tool_input: {
+          file_path: join(td.path, 'src/db/users.ts'),
+          old_string: 'async function getUserById',
+          new_string: 'async function findUserById',
+        },
+      };
+      const { code } = await hook(HOOK, editInput, { cwd: td.path });
+      assert.equal(code, 0);
+    } finally {
+      td.cleanup();
+    }
+  });
+});
+
 describe('api-guard — edge cases', () => {
   test('missing file_path exits clean', async () => {
     const { code } = await hook(HOOK, { tool_name: 'Write', tool_input: {} });

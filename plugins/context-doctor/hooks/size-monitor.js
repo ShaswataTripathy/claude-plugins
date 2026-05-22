@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 import { readFileSync, statSync, existsSync } from 'fs';
-import { join, resolve, extname } from 'path';
-import { homedir } from 'os';
+import { join, resolve } from 'path';
 
 const input = JSON.parse(readFileSync(0, 'utf8'));
 const filePath = input?.tool_input?.file_path ?? input?.tool_input?.path ?? '';
@@ -17,7 +16,6 @@ const isContextFile =
 
 if (!isContextFile) process.exit(0);
 
-// Give the write a moment to land before we stat it
 if (!existsSync(abs)) process.exit(0);
 
 const lines = readFileSync(abs, 'utf8').split('\n').length;

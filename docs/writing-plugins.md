@@ -69,15 +69,16 @@ Key rules:
   "name": "my-plugin",
   "version": "1.0.0",
   "description": "One sentence about what this plugin does.",
-  "skills": ["check"],
+  "skills": ["check.md"],
   "hookFiles": ["intercept.js"],
-  "hooks": [
-    {
-      "event": "PreToolUse",
-      "matcher": "Bash",
-      "command": "node \"{plugin_dir}/intercept.js\""
-    }
-  ]
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [{ "type": "command", "command": "node \"{plugin_dir}/hooks/intercept.js\"" }]
+      }
+    ]
+  }
 }
 ```
 
