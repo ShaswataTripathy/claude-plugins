@@ -46,6 +46,25 @@ npx claude-plugins uninstall <name>
 
 ---
 
+## Plugins
+
+| Plugin | Type | What it does |
+|--------|------|-------------|
+| [`db-guard`](#db-guard--destructive-database-and-infrastructure-interceptor) | Hook | Hard-blocks drizzle/prisma/terraform/SQL destructive commands. Escalates when prod DB detected in `.env` |
+| [`token-guard`](#token-guard--proactive-session-burn-prevention) | Hook | Warns before context limit. Intercepts expensive patterns (unbounded `cat`, `git log`, `find`) |
+| [`scope-guard`](#scope-guard--hook-enforced-task-scope-boundaries) | Hook | Blocks writes outside the path boundary you set at task start |
+| [`api-guard`](#api-guard--api-contract-integrity-checker) | Hook | Greps all callers of exported symbols before a file is saved |
+| [`context-doctor`](#context-doctor--claudemd-health-auditor-and-optimizer) | Hook | Warns when CLAUDE.md or skill files grow past the effective size threshold |
+| [`monorepo-setup`](#monorepo-setup--auto-generate-nested-claudemd-files) | Skill | Auto-generates per-package CLAUDE.md files from nx/turbo/pnpm workspace config |
+| [`git-workflow`](#git-workflow-v2--8-git-commands-with-safety-hooks) | Hook + Skill | 8 git commands + blocks `--force` push and direct commits to protected branches |
+| [`code-review`](#code-review--deep-diff-analysis) | Skill | `/review` and `/security` — correctness, performance, OWASP Top 10 |
+| [`docker-debug`](#docker-debug--container-diagnostics) | Skill | `/diagnose` and `/compose` — container logs, healthchecks, secret leaks |
+| [`pr-description`](#workflow-plugins) | Skill | `/pr` — structured PR description from your git diff |
+
+**Hook** = runs automatically on every Claude tool call, no prompt needed. **Skill** = slash command you invoke manually.
+
+---
+
 ## Safety plugins
 
 ### `db-guard` — Destructive database and infrastructure interceptor
