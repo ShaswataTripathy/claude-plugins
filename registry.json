@@ -1,6 +1,6 @@
 {
   "version": "2",
-  "updatedAt": "2026-05-22",
+  "updatedAt": "2026-05-23",
   "plugins": [
     {
       "name": "db-guard",
@@ -18,24 +18,6 @@
       "author": "community",
       "components": ["skill", "hook"],
       "tags": ["tokens", "context", "cost", "limits", "productivity"],
-      "stars": 0
-    },
-    {
-      "name": "monorepo-setup",
-      "version": "1.0.0",
-      "description": "Scans nx/turbo/pnpm workspace config and auto-generates nested CLAUDE.md files for every package.",
-      "author": "community",
-      "components": ["skill"],
-      "tags": ["monorepo", "nx", "turborepo", "setup", "context"],
-      "stars": 0
-    },
-    {
-      "name": "context-doctor",
-      "version": "1.0.0",
-      "description": "Diagnoses and fixes bloated CLAUDE.md and skill files. Stops context rot from burning tokens on every single message.",
-      "author": "community",
-      "components": ["skill", "hook"],
-      "tags": ["context", "claude-md", "optimization", "tokens"],
       "stars": 0
     },
     {
@@ -57,39 +39,21 @@
       "stars": 0
     },
     {
-      "name": "git-workflow",
-      "version": "2.0.0",
-      "description": "Complete git workflow — smart commits, branching, sync, undo, stash, history cleanup, and safety hooks.",
+      "name": "context-doctor",
+      "version": "1.0.0",
+      "description": "Diagnoses and fixes bloated CLAUDE.md and skill files. Stops context rot from burning tokens on every single message.",
       "author": "community",
       "components": ["skill", "hook"],
-      "tags": ["git", "productivity", "workflow", "commits", "branching"],
+      "tags": ["context", "claude-md", "optimization", "tokens"],
       "stars": 0
     },
     {
-      "name": "code-review",
+      "name": "monorepo-setup",
       "version": "1.0.0",
-      "description": "Deep code review with security, performance, and correctness analysis across any diff.",
+      "description": "Scans nx/turbo/pnpm workspace config and auto-generates nested CLAUDE.md files for every package.",
       "author": "community",
       "components": ["skill"],
-      "tags": ["review", "quality", "security"],
-      "stars": 0
-    },
-    {
-      "name": "docker-debug",
-      "version": "1.0.0",
-      "description": "Diagnose failing containers, inspect logs, and fix docker-compose issues.",
-      "author": "community",
-      "components": ["skill"],
-      "tags": ["docker", "debugging", "devops"],
-      "stars": 0
-    },
-    {
-      "name": "pr-description",
-      "version": "1.0.0",
-      "description": "Generate structured PR descriptions from your git diff automatically.",
-      "author": "community",
-      "components": ["skill"],
-      "tags": ["git", "github", "productivity"],
+      "tags": ["monorepo", "nx", "turborepo", "setup", "context"],
       "stars": 0
     }
   ]

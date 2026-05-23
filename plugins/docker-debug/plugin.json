@@ -1,8 +1,0 @@
-{
-  "name": "docker-debug",
-  "version": "1.0.0",
-  "description": "Diagnose failing containers, inspect logs, and suggest fixes instantly",
-  "author": "community",
-  "components": ["skill"],
-  "skills": ["diagnose.md", "compose.md"]
-}

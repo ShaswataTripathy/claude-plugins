@@ -8,6 +8,13 @@ All notable changes follow [Keep a Changelog](https://keepachangelog.com/en/1.1.
 
 ---
 
+## [0.4.0] — 2026-05-23
+
+### Removed
+- `git-workflow`, `code-review`, `docker-debug`, `pr-description` — generic skill-only plugins with no enforcement value. The project focus is hook-based safety enforcement that isn't already covered everywhere else.
+
+---
+
 ## [0.3.0] — 2026-05-23
 
 ### Added

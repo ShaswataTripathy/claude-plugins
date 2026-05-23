@@ -1,9 +1,0 @@
-{
-  "name": "code-review",
-  "version": "1.0.0",
-  "description": "Deep code review with security, perf, and style analysis on any diff",
-  "author": "community",
-  "components": ["skill"],
-  "skills": ["review.md", "security.md"],
-  "postInstall": "Slash commands added: /review, /security. Run /review to review your current diff."
-}

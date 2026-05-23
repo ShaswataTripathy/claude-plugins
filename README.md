@@ -48,34 +48,26 @@ npx claude-plugins uninstall <name>
 
 ## Plugins
 
-| Plugin | Type | What it does |
-|--------|------|-------------|
-| [`db-guard`](#db-guard--destructive-database-and-infrastructure-interceptor) | Hook | Hard-blocks drizzle/prisma/terraform/SQL destructive commands. Escalates when prod DB detected in `.env` |
-| [`token-guard`](#token-guard--proactive-session-burn-prevention) | Hook | Warns before context limit. Intercepts expensive patterns (unbounded `cat`, `git log`, `find`) |
-| [`scope-guard`](#scope-guard--hook-enforced-task-scope-boundaries) | Hook | Blocks writes outside the path boundary you set at task start |
-| [`api-guard`](#api-guard--api-contract-integrity-checker) | Hook | Greps all callers of exported symbols before a file is saved |
-| [`context-doctor`](#context-doctor--claudemd-health-auditor-and-optimizer) | Hook | Warns when CLAUDE.md or skill files grow past the effective size threshold |
-| [`monorepo-setup`](#monorepo-setup--auto-generate-nested-claudemd-files) | Skill | Auto-generates per-package CLAUDE.md files from nx/turbo/pnpm workspace config |
-| [`git-workflow`](#git-workflow-v2--8-git-commands-with-safety-hooks) | Hook + Skill | 8 git commands + blocks `--force` push and direct commits to protected branches |
-| [`code-review`](#code-review--deep-diff-analysis) | Skill | `/review` and `/security` — correctness, performance, OWASP Top 10 |
-| [`docker-debug`](#docker-debug--container-diagnostics) | Skill | `/diagnose` and `/compose` — container logs, healthchecks, secret leaks |
-| [`pr-description`](#workflow-plugins) | Skill | `/pr` — structured PR description from your git diff |
+| Plugin | What it does |
+|--------|-------------|
+| [`db-guard`](#db-guard) | Hard-blocks drizzle/prisma/terraform/SQL destructive commands. Escalates when prod DB detected in `.env` |
+| [`token-guard`](#token-guard) | Warns before context limit. Intercepts expensive patterns before they run |
+| [`scope-guard`](#scope-guard) | Blocks writes outside the path boundary you set at task start |
+| [`api-guard`](#api-guard) | Greps all callers of exported symbols before a file is saved |
+| [`context-doctor`](#context-doctor) | Warns when CLAUDE.md or skill files grow past the effective size threshold |
+| [`monorepo-setup`](#monorepo-setup) | Auto-generates per-package CLAUDE.md files from nx/turbo/pnpm workspace config |
 
-**Hook** = runs automatically on every Claude tool call, no prompt needed. **Skill** = slash command you invoke manually.
+All plugins except `monorepo-setup` run as hooks — automatically, on every Claude tool call, no prompt needed.
 
 ---
 
-## Safety plugins
-
-### `db-guard` — Destructive database and infrastructure interceptor
+## db-guard
 
 Blocks commands that have wiped production databases before they execute.
 
 ```bash
 npx claude-plugins install db-guard
 ```
-
-**What it intercepts:**
 
 | Command | Action |
 |---------|--------|
@@ -94,7 +86,7 @@ When a production database URL is detected in `.env` (Railway, RDS, Supabase, Ne
 
 ---
 
-### `token-guard` — Proactive session burn prevention
+## token-guard
 
 Stops you from hitting your usage limit mid-task.
 
@@ -102,12 +94,11 @@ Stops you from hitting your usage limit mid-task.
 npx claude-plugins install token-guard
 ```
 
-The `ccusage` dashboard tells you how much you burned. token-guard tells you **before** you burn it. Hooks fire after every tool call and before expensive operations, so you get a warning while there's still time to act.
+Hooks fire after every tool call and before expensive operations. Thresholds (based on tool call count as a context fill proxy):
 
-Thresholds (based on tool call count as a context fill proxy):
 - 30 calls → "Consider /compact soon"
-- 50 calls → "Run /compact now"  
-- 65 calls → "⚠️ Critical — next calls may fail"
+- 50 calls → "Run /compact now"
+- 65 calls → "Critical — next calls may fail"
 
 Also intercepts known context-exploding patterns before they run: `cat` on large files, `git log` without count limits, anything touching `node_modules`, `find` without `-maxdepth`.
 
@@ -115,9 +106,9 @@ Also intercepts known context-exploding patterns before they run: `cat` on large
 
 ---
 
-### `scope-guard` — Hook-enforced task scope boundaries
+## scope-guard
 
-CLAUDE.md instructions work 70% of the time. Hooks work 100%.
+CLAUDE.md instructions work most of the time. Hooks work every time.
 
 ```bash
 npx claude-plugins install scope-guard
@@ -129,15 +120,15 @@ Set a scope at the start of a task. Any write outside that scope is blocked at t
 /scope-set fix the login bug in src/auth/
 ```
 
-After that, any attempt to write to `src/user/profile.ts` or any other path gets blocked with a clear explanation. You can `/scope-allow` for a one-time exception or `/scope-add <path>` to expand the boundary.
+Any attempt to write to `src/user/profile.ts` or any path outside the boundary gets blocked with a clear explanation. Use `/scope-allow` for a one-time exception or `/scope-add <path>` to expand the boundary.
 
 Scope definitions expire after 4 hours automatically.
 
-**Slash commands:** `/scope-set`, `/scope-status`, `/scope-allow`, and auto-expiry
+**Slash commands:** `/scope-set`, `/scope-status`, `/scope-allow`
 
 ---
 
-### `api-guard` — API contract integrity checker
+## api-guard
 
 Catches broken callers before the file is saved.
 
@@ -145,7 +136,7 @@ Catches broken callers before the file is saved.
 npx claude-plugins install api-guard
 ```
 
-Every time Claude writes to a file that contains exported symbols, api-guard greps the codebase for callers. If your refactored function has 6 callers across 4 files, you see them in the warning — before the write completes, not after the CI run fails.
+Every time Claude writes to a file containing exported symbols, api-guard greps the codebase for callers. If your refactored function has 6 callers across 4 files, you see them in the warning — before the write completes, not after the CI run fails.
 
 Supports TypeScript, JavaScript, Python, and Go exports.
 
@@ -153,40 +144,15 @@ Supports TypeScript, JavaScript, Python, and Go exports.
 
 ---
 
-## Productivity plugins
+## context-doctor
 
-### `monorepo-setup` — Auto-generate nested CLAUDE.md files
-
-Claude edits the wrong package in your monorepo because it doesn't know your workspace boundaries. This generates the right CLAUDE.md files automatically.
-
-```bash
-npx claude-plugins install monorepo-setup
-```
-
-Run `/monorepo-init` from your repo root. It reads your `nx.json`, `turbo.json`, `pnpm-workspace.yaml`, or `package.json` workspaces, maps every package, and generates:
-
-- A root `CLAUDE.md` with a package map and cross-package import rules
-- A per-package `CLAUDE.md` for every workspace with scope boundaries, correct import patterns, and the right build/test commands
-
-What previously took an hour of manual setup takes 10 seconds.
-
-Supports: Nx, Turborepo, pnpm workspaces, npm/Yarn workspaces, Lerna, Go modules, Rust workspaces.
-
-**Slash commands:** `/monorepo-init`, `/monorepo-add <path>`, `/monorepo-audit`
-
----
-
-### `context-doctor` — CLAUDE.md health auditor and optimizer
-
-Context rot is what happens when your CLAUDE.md grows to 300 lines and Claude stops following half of it.
+Stops context rot before it costs you tokens.
 
 ```bash
 npx claude-plugins install context-doctor
 ```
 
-Every line in CLAUDE.md costs tokens on every single message — whether it's relevant to the current task or not. Claude also loses track of instructions past line 200. So a 300-line CLAUDE.md burns 2,400 extra tokens per session and only half of it is being followed.
-
-context-doctor audits all your context files, scores them, identifies bloat and duplicates, and applies fixes: moving sections to skills (load-on-demand vs. always-loaded), pruning stale entries, removing duplicate rules.
+Every line in CLAUDE.md costs tokens on every message. Claude also loses track of instructions past a certain length. context-doctor audits all your context files, scores them, identifies bloat and duplicates, and applies fixes: moving sections to skills (load-on-demand vs. always-loaded), pruning stale entries, removing duplicate rules.
 
 A hook fires whenever you modify a CLAUDE.md or skill file and warns if it crosses the size threshold.
 
@@ -194,64 +160,34 @@ A hook fires whenever you modify a CLAUDE.md or skill file and warns if it cross
 
 ---
 
-## Workflow plugins
+## monorepo-setup
 
-### `git-workflow` v2 — 8 git commands with safety hooks
-
-```bash
-npx claude-plugins install git-workflow
-```
-
-| Command | Does |
-|---------|------|
-| `/commit` | Conventional commit with auto-detected scope, ticket linking, breaking change detection |
-| `/branch` | Creates branches from GitHub issue titles, sets upstream automatically |
-| `/cleanup` | Detects squash-merged branches, checks for open PRs before deleting |
-| `/sync` | Rebase or merge with upstream, auto-stashes dirty state, handles conflicts |
-| `/undo` | Safe reset with clear distinction between local and pushed commits |
-| `/stash` | Named stash management with previews and conflict handling |
-| `/log` | Filtered history with bug archaeology mode (`-S` search) |
-| `/fixup` | Interactive history cleanup before merge — squash, reorder, drop |
-
-Hooks block `git push --force` (requires `--force-with-lease`) and block direct commits to `main`/`master`/`develop`.
-
----
-
-### `code-review` — Deep diff analysis
+Claude edits the wrong package in your monorepo because it doesn't know your workspace boundaries. This fixes it automatically.
 
 ```bash
-npx claude-plugins install code-review
+npx claude-plugins install monorepo-setup
 ```
 
-**Commands:** `/review`, `/security`
+Run `/monorepo-init` from your repo root. It reads your `nx.json`, `turbo.json`, `pnpm-workspace.yaml`, or `package.json` workspaces and generates:
 
-Reviews staged changes or a PR diff across correctness, security, performance, and maintainability. `/security` does a focused OWASP Top 10 scan.
+- A root `CLAUDE.md` with a package map and cross-package import rules
+- A per-package `CLAUDE.md` for every workspace with scope boundaries, correct import patterns, and the right build/test commands
 
----
+Supports: Nx, Turborepo, pnpm workspaces, npm/Yarn workspaces, Lerna, Go modules, Rust workspaces.
 
-### `docker-debug` — Container diagnostics
-
-```bash
-npx claude-plugins install docker-debug
-```
-
-**Commands:** `/diagnose`, `/compose`
-
-Reads container logs, exit codes, and stats to find root causes. `/compose` audits your docker-compose.yml for missing healthchecks, exposed secrets, and `latest` tags.
+**Slash commands:** `/monorepo-init`, `/monorepo-add <path>`, `/monorepo-audit`
 
 ---
 
 ## How plugins work
 
-Claude Code supports three extension points:
+Claude Code supports two extension points used here:
 
-**Slash commands (Skills)** — Markdown files in `~/.claude/commands/` that define how Claude responds to `/command-name`. Skills are instructions; they work most of the time.
+**Hooks** — Scripts that run on Claude Code events (`PreToolUse`, `PostToolUse`). Exit code `2` blocks the operation. Exit code `0` allows it. They run every time, without exception, whether you ask Claude to or not.
 
-**Hooks** — Shell scripts that run on Claude Code events (`PreToolUse`, `PostToolUse`, `SessionStart`). Hooks are enforcement; they run every time, without exception. Exit code `2` blocks the operation. Exit code `0` allows it through.
+**Slash commands (Skills)** — Markdown files in `~/.claude/commands/` that define how Claude responds to `/command-name`.
 
-**MCP Servers** — External tool servers Claude can call. Not used in this repo currently.
-
-`claude-plugins` installs all three automatically and writes the correct entries to `~/.claude/settings.json`.
+`claude-plugins` installs both automatically and writes the correct entries to `~/.claude/settings.json`.
 
 ---
 
@@ -271,15 +207,6 @@ npx claude-plugins install scope-guard --project
 
 A plugin is a directory with a manifest and optional `skills/` and `hooks/` folders.
 
-**Minimal plugin:**
-
-```
-my-plugin/
-├── plugin.json
-└── skills/
-    └── my-command.md
-```
-
 **`plugin.json`:**
 
 ```json
@@ -288,18 +215,6 @@ my-plugin/
   "version": "1.0.0",
   "description": "Does something useful",
   "author": "your-github-username",
-  "components": ["skill"],
-  "skills": ["my-command.md"]
-}
-```
-
-**Plugin with a hook:**
-
-```json
-{
-  "name": "my-plugin",
-  "version": "1.0.0",
-  "description": "...",
   "components": ["skill", "hook"],
   "skills": ["my-command.md"],
   "hookFiles": ["my-hook.js"],
@@ -314,24 +229,20 @@ my-plugin/
 }
 ```
 
-The `{plugin_dir}` placeholder is resolved to the actual installed path during installation.
-
 **Hook script basics:**
 
 ```javascript
 #!/usr/bin/env node
 import { readFileSync } from 'fs';
 
-// fd 0 works on Windows and Unix
-const input = JSON.parse(readFileSync(0, 'utf8'));
+const input = JSON.parse(readFileSync(0, 'utf8')); // fd 0 works on Windows and Unix
 const cmd = input?.tool_input?.command ?? '';
 
-// exit 2 = block, exit 0 = allow
 if (/something-dangerous/.test(cmd)) {
   process.stderr.write('my-plugin: blocked because reason\n');
-  process.exit(2);
+  process.exit(2); // block
 }
-process.exit(0);
+process.exit(0); // allow
 ```
 
 ### Submitting to the registry
@@ -339,9 +250,10 @@ process.exit(0);
 1. Fork this repo
 2. Add your plugin under `plugins/your-plugin-name/`
 3. Add an entry to `registry.json`
-4. Open a PR
+4. Add tests in `tests/hooks/your-plugin-name.test.js`
+5. Open a PR
 
-Hooks are reviewed carefully — they run automatically in every session.
+Hooks are reviewed for network requests, file access, and shell injection before any merge.
 
 ---
 
