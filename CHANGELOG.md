@@ -6,15 +6,24 @@ All notable changes follow [Keep a Changelog](https://keepachangelog.com/en/1.1.
 
 ## [Unreleased]
 
+---
+
+## [0.3.0] — 2026-05-23
+
 ### Added
 - Full test suite for all hook scripts using `node:test`
 - `.gitattributes` for consistent LF line endings
 - `docs/` directory: getting-started, writing-plugins, hook-api, plugin-manifest
 - `SECURITY.md` with hook execution model and vulnerability reporting
 - GitHub issue and PR templates
+- `LICENSE` file (MIT)
+- `package.json`: `files` field to scope npm publish to `cli/`, `plugins/`, `registry.json`
+- `package.json`: `prepublishOnly` script — tests run automatically before any publish
 
 ### Fixed
 - `scope-guard/enforce.js` was missing `writeFileSync` in its import
+- `git-workflow` hook used a heredoc (`<<'EOF'`) and `/dev/stdin` — both broken on Windows. Converted to a proper hook file (`hooks/protect.js`) using `readFileSync(0, 'utf8')` (fd 0)
+- `package.json` test script referenced `tests/cli/*.test.js` which doesn't exist — removed to prevent CI failures on Linux when glob expands to nothing
 
 ---
 

@@ -14,6 +14,7 @@
     "log.md",
     "fixup.md"
   ],
+  "hookFiles": ["protect.js"],
   "hooks": {
     "PreToolUse": [
       {
@@ -21,7 +22,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node --input-type=module <<'EOF'\nimport { readFileSync } from 'fs';\nconst input = JSON.parse(readFileSync('/dev/stdin', 'utf8'));\nconst cmd = input?.tool_input?.command || '';\n\n// Block git push --force (require --force-with-lease)\nif (/git push.*--force(?!-with-lease)/.test(cmd)) {\n  process.stderr.write('[git-workflow] Use --force-with-lease instead of --force to avoid overwriting remote commits.\\n');\n  process.exit(2);\n}\n\n// Block direct commits to main/master/develop\nif (/git commit/.test(cmd)) {\n  const { execSync } = await import('child_process');\n  try {\n    const branch = execSync('git branch --show-current', { encoding: 'utf8' }).trim();\n    if (/^(main|master|develop|staging|production)$/.test(branch)) {\n      process.stderr.write(`[git-workflow] You are about to commit directly to '${branch}'. Use a feature branch instead.\\nIf this is intentional, run the git command directly in your terminal.\\n`);\n      process.exit(2);\n    }\n  } catch { /* not in a git repo, allow */ }\n}\nEOF"
+            "command": "node \"{plugin_dir}/hooks/protect.js\""
           }
         ]
       }
