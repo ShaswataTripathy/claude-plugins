@@ -3,7 +3,7 @@ import { join } from 'path';
 import { getPluginStateDir } from './utils.js';
 
 const REGISTRY_URL =
-  'https://raw.githubusercontent.com/ShaswataTripathy/claude-plugins/main/registry.json';
+  'https://raw.githubusercontent.com/ShaswataTripathy/claude-plugins/master/registry.json';
 
 const CACHE_TTL_MS = 1000 * 60 * 60; // 1 hour
 

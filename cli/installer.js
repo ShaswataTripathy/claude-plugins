@@ -11,7 +11,7 @@ import {
 } from './utils.js';
 
 const BASE_RAW_URL =
-  'https://raw.githubusercontent.com/ShaswataTripathy/claude-plugins/main/plugins';
+  'https://raw.githubusercontent.com/ShaswataTripathy/claude-plugins/master/plugins';
 
 async function fetchText(url) {
   const { default: fetch } = await import('node-fetch');
