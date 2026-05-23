@@ -1,6 +1,6 @@
 {
   "name": "claude-code-guard",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "The safety layer Claude Code doesn't ship with — hooks that enforce, not suggest",
   "type": "module",
   "main": "cli/index.js",
