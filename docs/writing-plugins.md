@@ -99,7 +99,7 @@ Add an entry to `registry.json` in the repo root:
 }
 ```
 
-`name` must match the directory name under `plugins/`. `components` lists what the plugin provides (`"skill"`, `"hook"`, or both). `tags` are used by `npx claude-plugins search`.
+`name` must match the directory name under `plugins/`. `components` lists what the plugin provides (`"skill"`, `"hook"`, or both). `tags` are used by `npx claude-code-guard search`.
 
 ## Step 6 — Write tests
 

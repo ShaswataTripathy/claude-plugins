@@ -11,7 +11,7 @@ const pkg = JSON.parse(
 );
 
 program
-  .name('claude-plugins')
+  .name('claude-code-guard')
   .description('Community plugin manager for Claude Code CLI')
   .version(pkg.version);
 
@@ -62,7 +62,7 @@ program
     const state = readPluginState();
     const plugins = Object.values(state);
     if (plugins.length === 0) {
-      console.log(chalk.gray('No plugins installed. Run `claude-plugins search` to browse.'));
+      console.log(chalk.gray('No plugins installed. Run `claude-code-guard search` to browse.'));
       return;
     }
     console.log(chalk.bold('\n  Installed plugins:\n'));
@@ -124,7 +124,7 @@ program
       if (installed) {
         console.log(chalk.green(`\n  Installed at: ${new Date(installed.installedAt).toLocaleString()}`));
       } else {
-        console.log(chalk.gray(`\n  Not installed. Run: claude-plugins install ${name}`));
+        console.log(chalk.gray(`\n  Not installed. Run: claude-code-guard install ${name}`));
       }
       console.log();
     } catch (err) {

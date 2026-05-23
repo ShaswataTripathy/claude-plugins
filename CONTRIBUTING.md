@@ -1,4 +1,4 @@
-# Contributing to claude-plugins
+# Contributing to claude-code-guard
 
 ## Adding a new plugin
 

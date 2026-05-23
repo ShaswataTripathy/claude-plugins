@@ -7,10 +7,10 @@
 
 ## Install a plugin
 
-You do not need to install `claude-plugins` globally. Use `npx`:
+You do not need to install `claude-code-guard` globally. Use `npx`:
 
 ```bash
-npx claude-plugins install db-guard
+npx claude-code-guard install db-guard
 ```
 
 This will:
@@ -24,7 +24,7 @@ The changes take effect in the next Claude Code session you start.
 ## Verify the install
 
 ```bash
-npx claude-plugins list
+npx claude-code-guard list
 ```
 
 To confirm a hook is wired up, open Claude Code and run:
@@ -40,7 +40,7 @@ or check `~/.claude/settings.json` for the hook entry directly.
 By default, plugins install globally (available in every project). To install into the current project only:
 
 ```bash
-npx claude-plugins install scope-guard --project
+npx claude-code-guard install scope-guard --project
 ```
 
 This writes to `.claude/settings.json` and `.claude/commands/` in the current directory instead of `~/.claude/`.
@@ -48,7 +48,7 @@ This writes to `.claude/settings.json` and `.claude/commands/` in the current di
 ## Remove a plugin
 
 ```bash
-npx claude-plugins uninstall db-guard
+npx claude-code-guard uninstall db-guard
 ```
 
 This removes all skill files, hook scripts, and `settings.json` entries for that plugin. It does not touch settings added by other plugins.
@@ -56,27 +56,27 @@ This removes all skill files, hook scripts, and `settings.json` entries for that
 ## Update all plugins
 
 ```bash
-npx claude-plugins update
+npx claude-code-guard update
 ```
 
 Or update a specific one:
 
 ```bash
-npx claude-plugins update token-guard
+npx claude-code-guard update token-guard
 ```
 
 ## Browse available plugins
 
 ```bash
 # List all plugins with descriptions
-npx claude-plugins search
+npx claude-code-guard search
 
 # Search by keyword
-npx claude-plugins search database
-npx claude-plugins search git
+npx claude-code-guard search database
+npx claude-code-guard search git
 
 # Get details on a specific plugin
-npx claude-plugins info db-guard
+npx claude-code-guard info db-guard
 ```
 
 ## Recommended install order
@@ -85,19 +85,19 @@ If you are setting up a new machine or project:
 
 ```bash
 # Safety first — these are passive and cause no friction
-npx claude-plugins install db-guard
-npx claude-plugins install token-guard
-npx claude-plugins install api-guard
+npx claude-code-guard install db-guard
+npx claude-code-guard install token-guard
+npx claude-code-guard install api-guard
 
 # If you work in a monorepo, run this next
-npx claude-plugins install monorepo-setup
+npx claude-code-guard install monorepo-setup
 # then: /monorepo-init
 
 # Scope enforcement is opt-in per task, install globally
-npx claude-plugins install scope-guard
+npx claude-code-guard install scope-guard
 
 # Context health — useful after a few weeks of accumulation
-npx claude-plugins install context-doctor
+npx claude-code-guard install context-doctor
 ```
 
 ## How hooks work

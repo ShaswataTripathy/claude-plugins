@@ -1,11 +1,11 @@
 {
-  "name": "claude-plugins",
-  "version": "0.5.0",
+  "name": "claude-code-guard",
+  "version": "0.5.1",
   "description": "The safety layer Claude Code doesn't ship with — hooks that enforce, not suggest",
   "type": "module",
   "main": "cli/index.js",
   "bin": {
-    "claude-plugins": "cli/index.js"
+    "claude-code-guard": "cli/index.js"
   },
   "files": [
     "cli/",

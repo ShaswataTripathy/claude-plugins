@@ -1,15 +1,15 @@
-# claude-plugins
+# claude-code-guard
 
 [![CI](https://github.com/ShaswataTripathy/claude-plugins/actions/workflows/ci.yml/badge.svg)](https://github.com/ShaswataTripathy/claude-plugins/actions/workflows/ci.yml)
-[![npm version](https://img.shields.io/npm/v/claude-plugins.svg)](https://www.npmjs.com/package/claude-plugins)
+[![npm version](https://img.shields.io/npm/v/claude-code-guard.svg)](https://www.npmjs.com/package/claude-code-guard)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18-brightgreen.svg)](https://nodejs.org)
 
 > **The safety layer Claude Code doesn't ship with.**
 
 ```bash
-npx claude-plugins install db-guard
-npx claude-plugins install token-guard
+npx claude-code-guard install db-guard
+npx claude-code-guard install token-guard
 ```
 
 Most Claude Code repos give you more slash commands — things you invoke manually. This one gives you **hooks that enforce automatically**, running on every tool call whether you ask Claude to or not.
@@ -52,30 +52,30 @@ The first five run as hooks — they fire on every matching tool call, silently,
 
 ```bash
 # See all available plugins
-npx claude-plugins search
+npx claude-code-guard search
 
 # Install a plugin (global — active in every project)
-npx claude-plugins install db-guard
+npx claude-code-guard install db-guard
 
 # Install into the current project only
-npx claude-plugins install scope-guard --project
+npx claude-code-guard install scope-guard --project
 
 # List what's installed
-npx claude-plugins list
+npx claude-code-guard list
 
 # Update all plugins
-npx claude-plugins update
+npx claude-code-guard update
 
 # Remove a plugin
-npx claude-plugins uninstall db-guard
+npx claude-code-guard uninstall db-guard
 ```
 
 **Recommended first install:**
 
 ```bash
-npx claude-plugins install db-guard      # prevents data loss
-npx claude-plugins install token-guard   # prevents mid-task context walls
-npx claude-plugins install api-guard     # prevents silent build breaks
+npx claude-code-guard install db-guard      # prevents data loss
+npx claude-code-guard install token-guard   # prevents mid-task context walls
+npx claude-code-guard install api-guard     # prevents silent build breaks
 ```
 
 ---
@@ -85,7 +85,7 @@ npx claude-plugins install api-guard     # prevents silent build breaks
 Intercepts destructive database and infrastructure commands before Claude executes them.
 
 ```bash
-npx claude-plugins install db-guard
+npx claude-code-guard install db-guard
 ```
 
 | Command | Result |
@@ -112,7 +112,7 @@ When a production database URL is detected in `.env` — Railway, RDS, Supabase,
 Stops you from hitting your usage limit mid-task, before the wall appears.
 
 ```bash
-npx claude-plugins install token-guard
+npx claude-code-guard install token-guard
 ```
 
 Hooks fire after every tool call. Warnings appear while there's still time to act:
@@ -140,7 +140,7 @@ Also blocks or warns on known context-exploding patterns before they run:
 Enforces task scope at the filesystem level. CLAUDE.md instructions get ignored sometimes. Hooks don't.
 
 ```bash
-npx claude-plugins install scope-guard
+npx claude-code-guard install scope-guard
 ```
 
 Set a boundary at the start of a task:
@@ -167,7 +167,7 @@ Scopes expire after 4 hours automatically, so stale rules from a previous task n
 Catches broken callers before the file is saved, not after CI fails.
 
 ```bash
-npx claude-plugins install api-guard
+npx claude-code-guard install api-guard
 ```
 
 Every time Claude writes to a file that contains exported symbols, api-guard greps the codebase for callers. If your refactored function signature has 6 callers across 4 files, you see them in the warning — before the write completes.
@@ -194,7 +194,7 @@ Supports TypeScript, JavaScript, Python, and Go exports.
 Stops context rot before it costs you tokens on every message.
 
 ```bash
-npx claude-plugins install context-doctor
+npx claude-code-guard install context-doctor
 ```
 
 Every line in CLAUDE.md is loaded on every message — whether it's relevant or not. Claude also loses track of instructions past ~150 lines. A 300-line CLAUDE.md burns tokens constantly and only half of it is being read.
@@ -216,7 +216,7 @@ A hook fires every time you write a CLAUDE.md or skill file:
 Fixes the root cause of Claude editing the wrong package in your monorepo.
 
 ```bash
-npx claude-plugins install monorepo-setup
+npx claude-code-guard install monorepo-setup
 ```
 
 Run `/monorepo-init` from your repo root. It reads your workspace config and generates:
@@ -238,7 +238,7 @@ Claude Code exposes two extension points:
 
 **Slash commands (Skills)** are markdown files in `~/.claude/commands/` that tell Claude how to respond to `/command-name`. They work most of the time.
 
-`claude-plugins` installs both automatically and patches `~/.claude/settings.json` with the correct hook entries. Uninstalling removes only what the plugin added.
+`claude-code-guard` installs both automatically and patches `~/.claude/settings.json` with the correct hook entries. Uninstalling removes only what the plugin added.
 
 ---
 

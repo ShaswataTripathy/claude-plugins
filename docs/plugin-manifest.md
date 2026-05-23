@@ -58,7 +58,7 @@ Semantic version string. The installer uses this to detect available updates.
 "description": "Blocks destructive database and infrastructure commands."
 ```
 
-One sentence. Shown in `npx claude-plugins search` output and `npx claude-plugins info <name>`.
+One sentence. Shown in `npx claude-code-guard search` output and `npx claude-code-guard info <name>`.
 
 ### `skills`
 

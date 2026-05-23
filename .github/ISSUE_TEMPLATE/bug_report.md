@@ -22,7 +22,7 @@ labels: bug
 
 - OS: <!-- e.g. macOS 14, Windows 11, Ubuntu 22.04 -->
 - Node.js version: <!-- node --version -->
-- claude-plugins version: <!-- npx claude-plugins --version -->
+- claude-code-guard version: <!-- npx claude-code-guard --version -->
 - Plugin name and version: <!-- e.g. db-guard 1.0.0 -->
 - Claude Code version: <!-- claude --version -->
 

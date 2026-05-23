@@ -8,6 +8,13 @@ All notable changes follow [Keep a Changelog](https://keepachangelog.com/en/1.1.
 
 ---
 
+## [0.5.1] — 2026-05-23
+
+### Changed
+- Package renamed from `claude-plugins` to `claude-code-guard` — the original name was already taken on npm. CLI command is now `npx claude-code-guard`.
+
+---
+
 ## [0.5.0] — 2026-05-23
 
 ### Added
@@ -66,7 +73,7 @@ All notable changes follow [Keep a Changelog](https://keepachangelog.com/en/1.1.
 ## [0.1.0] — 2026-05-22
 
 ### Added
-- `npx claude-plugins` CLI with `install`, `uninstall`, `list`, `search`, `info`, `update`
+- `npx claude-code-guard` CLI with `install`, `uninstall`, `list`, `search`, `info`, `update`
 - **git-workflow** v2: `/commit`, `/branch`, `/cleanup`, `/sync`, `/undo`, `/stash`, `/log`, `/fixup` with safety hooks
 - **code-review**: `/review`, `/security`
 - **docker-debug**: `/diagnose`, `/compose`
