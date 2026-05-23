@@ -8,6 +8,22 @@ All notable changes follow [Keep a Changelog](https://keepachangelog.com/en/1.1.
 
 ---
 
+## [0.5.0] — 2026-05-23
+
+### Added
+- CI workflow — tests run on every push and PR across Node 18, 20, 22
+- CI badge in README
+
+### Fixed
+- `docs/writing-plugins.md`: registry.json example had a `url` field that doesn't exist in the schema
+- `docs/plugin-manifest.md`: MCP field documented as `mcp` but installer reads `mcpServers`
+- `CONTRIBUTING.md`: hook guideline said "no destructive changes without confirmation" — these hooks block unconditionally by design
+
+### Changed
+- README rewritten: incident table, per-plugin example output, performance FAQ, cleaner structure
+
+---
+
 ## [0.4.0] — 2026-05-23
 
 ### Removed

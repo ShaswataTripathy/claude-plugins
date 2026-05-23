@@ -138,16 +138,18 @@ node "/Users/you/.claude/plugins/db-guard/hooks/intercept.js"
 
 Always quote `{plugin_dir}` — it may contain spaces on Windows.
 
-### `mcp` (optional)
+### `mcpServers` (optional)
 
 ```json
-"mcp": {
-  "command": "node",
-  "args": ["{plugin_dir}/server.js"]
+"mcpServers": {
+  "my-server": {
+    "command": "node",
+    "args": ["{plugin_dir}/server.js"]
+  }
 }
 ```
 
-Registers an MCP server entry in `settings.json`. `{plugin_dir}` is resolved the same way as in hook commands. MCP servers must implement the Model Context Protocol spec.
+Registers MCP server entries in `settings.json`. The object is keyed by server name — the same key that appears under `mcpServers` in Claude Code settings. `{plugin_dir}` is resolved the same way as in hook commands. MCP servers must implement the Model Context Protocol spec.
 
 ## Validation
 

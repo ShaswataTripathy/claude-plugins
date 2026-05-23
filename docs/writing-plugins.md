@@ -93,11 +93,13 @@ Add an entry to `registry.json` in the repo root:
   "name": "my-plugin",
   "version": "1.0.0",
   "description": "One sentence about what this plugin does.",
-  "url": "https://raw.githubusercontent.com/your-org/claude-plugins/main/plugins/my-plugin"
+  "author": "your-github-username",
+  "components": ["skill", "hook"],
+  "tags": ["relevant", "keywords"]
 }
 ```
 
-The `url` must be a raw GitHub URL pointing to the directory that contains `plugin.json`.
+`name` must match the directory name under `plugins/`. `components` lists what the plugin provides (`"skill"`, `"hook"`, or both). `tags` are used by `npx claude-plugins search`.
 
 ## Step 6 — Write tests
 

@@ -24,9 +24,10 @@ Before opening a PR, make sure your plugin:
 
 Hooks run automatically during Claude Code sessions. Submissions with hooks must:
 
-- Only exit with code 2 (block) for genuinely dangerous operations
-- Never silently modify files or state
-- Include a comment explaining why the hook exists
+- Only exit with code 2 (block) for operations that are genuinely dangerous and have no safe path forward — blocking too aggressively breaks normal workflows
+- Never silently modify files or state outside `~/.claude/plugins/<name>/`
+- Make no network requests
+- Include a comment explaining why the operation is dangerous
 
 ## Code style
 
